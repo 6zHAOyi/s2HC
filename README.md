@@ -80,5 +80,5 @@ Our implementation stands on the shoulders of several excellent open-source proj
 
 - [LitGPT](https://github.com/Lightning-AI/litgpt): For providing a robust and scalable framework for large language model pretraining.
 - [mHC-lite](https://github.com/FFTYYY/mhc-lite): For the implementations of Manifold-Constrained Hyper-Connections (`mhc`) and their own Permutation-based Hyper-Connections(`mhc-lite`).
-- [KromHC](https://github.com/lucidrains/kromhc): For the implementation of Kronecker-Product based Hyper-Connections (`kromHC`).
+- [KromHC](https://github.com/wz1119/KromHC): For the implementation of Kronecker-Product based Hyper-Connections (`kromHC`).
 - [HC](https://github.com/lucidrains/hyper-connections): For the implementation of Hyper-Connections (`HC`).
