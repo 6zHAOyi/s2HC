@@ -48,11 +48,8 @@ def l1norm(t, dim):
 
 
 def get_all_permutations(n: int):
-    """
-    生成所有 n × n 的排列矩阵，并按 (n!, n, n) 的形状返回
-    """
 
-    assert n >= 1, "n 必须为正整数"
+    assert n >= 1, "n must be a positive integer"
 
     perms = list(itertools.permutations(range(n)))
     index = torch.tensor(perms, dtype=torch.long)
@@ -113,7 +110,6 @@ class RMSNorm(Module):
         self.gamma = nn.Parameter(torch.zeros(dim))
 
     def forward(self, x):
-        # x: (Batch, Seq, num_fracs, Streams * Dim/num_fracs)
         return F.normalize(x, dim = -1) * self.scale * (self.gamma + 1)
 
 # main classes
@@ -322,7 +318,7 @@ class MHCLite(Module):
 
     def width_connection(
         self,
-        residuals # (Batch_Size × Num_Streams, Sequence_Length, Feature_Dim)
+        residuals
     ):
         streams = self.num_residual_streams
 
@@ -337,27 +333,20 @@ class MHCLite(Module):
 
         # split out fractions
 
-        # (Batch_Size × Num_Streams, Sequence_Length, Feature_Dim) -> (Batch×Streams, Seq, num_fracs, Dim/num_fracs)
         residuals = self.split_fracs(residuals) 
 
         # split out streams
 
-        # (Batch×Streams, Seq, num_fracs, Dim/num_fracs) -> (Batch, Seq, num_fracs, Streams, Dim/num_fracs)
         residuals = rearrange(residuals, '(b s) ... d -> b ... s d', s = streams)
 
-        # norm (Batch, Seq, num_fracs, Streams, Dim/num_fracs) -> (Batch, Seq, num_fracs, Streams * Dim/num_fracs)
         normed = rearrange(residuals, 'b ... s d -> b ... (s d)', s = streams)
         # normed = F.normalize(normed, dim = -1)
         normed = self.norm(normed)
 
         # alpha for weighted sum of residuals going into branch
-        # 通过线性层根据输入计算动态权重
-        # 对应论文公式 (4) 中线性变换部分： alpha * x * W + b
         wc_weight = normed @ self.dynamic_alpha_fn # ... f (s*v + s!)
         psize = self.num_input_views * streams
-        # 将权重分为两部分：
-        # dynamic_pre: 用于计算 H_pre (进入分支的权重)
-        # dynamic_residual: 用于计算 H_res (残差流混合权重，即公式 5 中的 a)
+        
         dynamic_pre, dynamic_residual = wc_weight[..., :psize], wc_weight[..., psize:]
         static_pre  , static_residual   = self.static_alpha[:psize], self.static_alpha[psize:]
 
@@ -366,10 +355,10 @@ class MHCLite(Module):
             _perm_mats = get_all_permutations(streams).to(dev)
             perm_mats[(streams, dev)] = _perm_mats
         perms = perm_mats[(streams, dev)]
-        # 1. 计算 softmax 得到凸组合的系数 a
+        
         res_coeff = self.residual_scale * dynamic_residual + static_residual
         res_coeff = torch.softmax(res_coeff, dim = -1)
-        # 3. 执行凸组合求和：Sum(a_k * P_k)
+        
         alpha_residual = einsum(res_coeff, perms, '... r, r i j-> ... i j') # (..., s, s)
         alpha_residual = self.split_fracs(alpha_residual) # (..., f, s, f, s)
         
@@ -435,7 +424,6 @@ class MHCLite(Module):
         if self.channel_first:
             branch_output = rearrange(branch_output, 'b d ... -> b ... d')
 
-        #beta: [16, 1024, 1, 4, 1] branch_output: (B,T,F,D/F) output: [16, 1024, 1, 4, 512]
         output = einsum(branch_output, beta, 'b ... f1 d, b ... f1 s f2 -> b ... f2 s d')
 
         output = rearrange(output, 'b ... s d -> (b s) ... d')
@@ -472,7 +460,7 @@ class MHCLite(Module):
 
     def forward(
         self,
-        residuals, # (Batch_Size × Num_Streams, Sequence_Length, Feature_Dim)
+        residuals,
         *branch_args,
         **branch_kwargs
     ):

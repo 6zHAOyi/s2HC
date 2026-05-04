@@ -22,6 +22,8 @@ from .shc import (
 flag = False
 
 def hyper_conn_init_func(hyper_conn_type: str, hyper_conn_n: int):
+    assert hyper_conn_n >= 1, "The number of streams must be a positive integer."
+
     global flag
     if not flag:
         print(f"HYPER_CONN: USING {hyper_conn_type} with {hyper_conn_n} streams")

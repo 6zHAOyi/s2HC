@@ -83,7 +83,7 @@ def factorize_into_twos(n: int):
 
 def get_all_permutations(n: int):
     """
-    Generate all n × n permutation matrices, returned as shape (n!, n, n)
+    Generate all n x n permutation matrices, returned as shape (n!, n, n)
     """
     assert n >= 1, "n must be a positive integer"
 

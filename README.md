@@ -8,6 +8,7 @@
 6. [Launch Pretraining](#launch-pretraining)
 7. [Personalize](#personalize)
 8. [Acknowledgements](#acknowledgements)
+9. [Cite](#cite)
 
 ## Code preparation
 Clone this repository
@@ -69,3 +70,13 @@ Our implementation stands on the shoulders of several excellent open-source proj
 - [mHC-lite](https://github.com/FFTYYY/mhc-lite): For the implementations of Manifold-Constrained Hyper-Connections (`mhc`) and their own Permutation-based Hyper-Connections(`mhc-lite`).
 - [KromHC](https://github.com/lucidrains/kromhc): For the implementation of Kronecker-Product based Hyper-Connections (`kromHC`).
 - [HC](https://github.com/lucidrains/hyper-connections): For the implementation of Hyper-Connections (`HC`).
+
+## Cite
+```
+@article{liu2026beyond,
+  title={Beyond the Birkhoff Polytope: Spectral-Sphere-Constrained Hyper-Connections},
+  author={Liu, Zhaoyi and Zhang, Haichuan and Li, Ang},
+  journal={arXiv preprint arXiv:2603.20896},
+  year={2026}
+}
+```
