@@ -1,0 +1,61 @@
+
+model_name: Qwen3-0.6B
+
+
+out_dir: out/pretrain/Qwen3-0.6B
+
+precision: bf16-mixed
+
+initial_checkpoint_dir:
+resume: false
+
+data: FineWebEdu
+
+train:
+  save_interval: 2000
+  log_interval: 10
+
+  
+  global_batch_size: 512
+
+  
+  micro_batch_size: 8
+
+  lr_warmup_steps: 1000
+
+  epochs:
+  
+  max_tokens: 14980000000
+
+  max_steps:
+  
+  
+  max_seq_length: 2048
+
+  tie_embeddings: false
+  max_norm: 1.0
+  min_lr: 6.0e-05
+
+eval:
+  interval: 2000
+  max_new_tokens:
+  max_iters: 100
+  initial_validation: false
+  final_validation: true
+
+optimizer:
+  class_path: torch.optim.AdamW
+  init_args:
+    lr: 6e-4
+    weight_decay: 0.1
+    betas:
+      - 0.9
+      - 0.95
+
+devices: 4
+num_nodes: 1
+
+tokenizer_dir: checkpoints/Qwen/Qwen3-0.6B
+
+logger_name: csv
+seed: 42
