@@ -7,8 +7,9 @@
 5. [Configuration preparation](#configuration-preparation)
 6. [Launch Pretraining](#launch-pretraining)
 7. [Personalize](#personalize)
-8. [Acknowledgements](#acknowledgements)
-9. [Cite](#cite)
+8. [Cite](#cite)
+9. [Acknowledgements](#acknowledgements)
+
 
 ## Code preparation
 Clone this repository
@@ -62,14 +63,6 @@ If you want to train on different datasets or other base model architectures, yo
 
 All our hyper-connection methods (e.g., `shc`, `mhc`) are designed as plug-and-play modules and are fully compatible with LitGPT's standard training pipeline.
 
-## Acknowledgements
-
-Our implementation stands on the shoulders of several excellent open-source projects. We would like to express our gratitude to:
-
-- [LitGPT](https://github.com/Lightning-AI/litgpt): For providing a robust and scalable framework for large language model pretraining.
-- [mHC-lite](https://github.com/FFTYYY/mhc-lite): For the implementations of Manifold-Constrained Hyper-Connections (`mhc`) and their own Permutation-based Hyper-Connections(`mhc-lite`).
-- [KromHC](https://github.com/lucidrains/kromhc): For the implementation of Kronecker-Product based Hyper-Connections (`kromHC`).
-- [HC](https://github.com/lucidrains/hyper-connections): For the implementation of Hyper-Connections (`HC`).
 
 ## Cite
 ```
@@ -80,3 +73,12 @@ Our implementation stands on the shoulders of several excellent open-source proj
   year={2026}
 }
 ```
+
+## Acknowledgements
+
+Our implementation stands on the shoulders of several excellent open-source projects. We would like to express our gratitude to:
+
+- [LitGPT](https://github.com/Lightning-AI/litgpt): For providing a robust and scalable framework for large language model pretraining.
+- [mHC-lite](https://github.com/FFTYYY/mhc-lite): For the implementations of Manifold-Constrained Hyper-Connections (`mhc`) and their own Permutation-based Hyper-Connections(`mhc-lite`).
+- [KromHC](https://github.com/lucidrains/kromhc): For the implementation of Kronecker-Product based Hyper-Connections (`kromHC`).
+- [HC](https://github.com/lucidrains/hyper-connections): For the implementation of Hyper-Connections (`HC`).
